@@ -1,0 +1,38 @@
+// export const BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : '';
+
+export const BASE_URL = "";
+export const PRODUCTS_URL = `/api/products`;
+export const PRODUCT_DETAILS_URL = (id) => `/api/products/${id}`;
+export const CART_URL = `/api/cart`;
+export const USER_URL = `/api/users`;
+export const ORDER_URL = `/api/orders`;
+export const PAYMENT_URL = `/api/payments`;
+export const PROFILE_URL = `/api/profile`;
+export const STRIPE_URL = `/api/stripe`;
+export const GOOGLE_URL = `/api/google`;
+export const FACEBOOK_URL = `/api/facebook`;
+export const LOGIN_URL = `/api/login`;
+export const REGISTER_URL = `/api/register`;
+export const LOGOUT_URL = `/api/logout`;
+export const FORGOT_PASSWORD_URL = `/api/forgotpassword`;
+export const RESET_PASSWORD_URL = `/api/resetpassword`;
+export const UPLOAD_URL = `/api/upload`;
+export const SEARCH_URL = `/api/search`;
+export const REVIEW_URL = `/api/reviews`;
+export const TOP_PRODUCTS_URL = `/api/products/top`;
+export const ADMIN_USERS_URL = `/api/admin/users`;
+export const ADMIN_USER_DETAILS_URL = (id) => `/api/admin/users/${id}`;
+export const ADMIN_PRODUCTS_URL = `/api/admin/products`;
+export const ADMIN_PRODUCT_DETAILS_URL = (id) => `/api/admin/products/${id}`;
+export const ADMIN_ORDERS_URL = `/api/admin/orders`;
+export const ADMIN_ORDER_DETAILS_URL = (id) => `/api/admin/orders/${id}`;
+export const ADMIN_REVIEWS_URL = `/api/admin/reviews`;
+export const ADMIN_REVIEW_DETAILS_URL = (id) => `/api/admin/reviews/${id}`;
+export const ADMIN_CATEGORIES_URL = `/api/admin/categories`;
+export const ADMIN_CATEGORY_DETAILS_URL = (id) => `/api/admin/categories/${id}`;
+export const ADMIN_BRANDS_URL = `/api/admin/brands`;
+export const ADMIN_BRAND_DETAILS_URL = (id) => `/api/admin/brands/${id}`;
+export const ADMIN_UPLOAD_URL = `/api/admin/upload`;
+export const ADMIN_SEARCH_URL = `/api/admin/search`;
+export const PAYPAL_URL = '/api/paypal'; 
+
