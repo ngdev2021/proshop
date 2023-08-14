@@ -1,9 +1,11 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 dotenv.config();
 // import products from './data/products.js';
 import connectDB from './config/db.js';
 import productRoutes from './routes/productRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 
 const port = process.env.PORT || 5000;
@@ -17,7 +19,13 @@ app.get('/', (req, res) => {
     }
 );
 
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+
 app.use('/api/products', productRoutes);
+app.use('/api/users', userRoutes);
 
 app.use((req, res, next) => {
     const error = new Error(`Not Found - ${req.originalUrl}`);

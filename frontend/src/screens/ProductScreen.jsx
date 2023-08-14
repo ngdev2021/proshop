@@ -28,9 +28,7 @@ const ProductScreen = () => {
         navigate('/cart')
     }
 
-    const clearCartHandler = () => {
-        dispatch(clearCart())
-    }
+  
 
 
 
@@ -115,11 +113,7 @@ const ProductScreen = () => {
                                 Add to Cart
                             </Button>
                         </ListGroup.Item>
-                        <ListGroup.Item>
-                            <Button className='btn-block' type='button' onClick={clearCartHandler}>
-                                Clear Cart
-                            </Button>
-                        </ListGroup.Item>
+                        
                     </ListGroup>
                 </Card>
             </Col>
