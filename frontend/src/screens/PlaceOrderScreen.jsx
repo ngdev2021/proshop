@@ -4,7 +4,6 @@ import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
 import Message from '../components/Message';
-import { createOrder } from '../slices/orderSlice';
 import { toast } from 'react-toastify';
 import { clearCartItems } from '../slices/cartSlice';
 import { useCreateOrderMutation } from '../slices/ordersApiSlice';
@@ -16,7 +15,9 @@ const PlaceOrderScreen = () => {
     
     const cart = useSelector((state) => state.cart);
 
-    const [createOrder , { isLoading, isSuccess, isError, error }] = useCreateOrderMutation();
+    const [createOrder ,
+        //  { isLoading, isSuccess, isError, error }
+        ] = useCreateOrderMutation();
 
     useEffect(() => {
         if (!cart.shippingAddress.address) {
