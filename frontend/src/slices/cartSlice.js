@@ -4,6 +4,8 @@ import { updateCart } from "../utils/cartUtils";
 // const initialState = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : { cartItems: [] }
 const initialState = {
     cartItems: localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [],
+    shippingAddress: localStorage.getItem('shippingAddress') ? JSON.parse(localStorage.getItem('shippingAddress')) : {},
+    paymentMethod: 'PayPal',
     itemsPrice: localStorage.getItem('itemsPrice') ? JSON.parse(localStorage.getItem('itemsPrice')) : 0,
     shippingPrice: localStorage.getItem('shippingPrice') ? JSON.parse(localStorage.getItem('shippingPrice')) : 0,
     taxPrice: localStorage.getItem('taxPrice') ? JSON.parse(localStorage.getItem('taxPrice')) : 0,
@@ -46,24 +48,26 @@ const cartSlice = createSlice({
             return updateCart(state);
         },
 
+
         updateItemsInCart: (state, action) => {
             state.cartItems = action.payload;
             return updateCart(state);
         },
 
+        saveShippingAddress: (state, action) => {
+            state.shippingAddress = action.payload;
+            localStorage.setItem('shippingAddress', JSON.stringify(action.payload));
+            return updateCart(state);
+        },
 
-
-        
-     
-      
-    clearCart: (state) => {
-        state.cartItems = [];
-        state.itemsPrice = 0;
-        state.shippingPrice = 0;
-        state.taxPrice = 0;
-        state.totalPrice = 0;
-        localStorage.removeItem('cartItems');
-    }
+        savePaymentMethod: (state, action) => {
+            state.paymentMethod = action.payload;
+            return updateCart(state);
+        },
+            clearCartItems: (state, action) => {
+               state.cartItems = [];
+                return updateCart(state);
+        },
 
 },
 
@@ -71,6 +75,6 @@ const cartSlice = createSlice({
 
 })
 
-export const { addToCart, clearCart, removeFromCart, updateItemsInCart } = cartSlice.actions;
+export const { addToCart, clearCartItems, removeFromCart, updateItemsInCart, savePaymentMethod, saveShippingAddress } = cartSlice.actions;
 
 export default cartSlice.reducer;
