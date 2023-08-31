@@ -51,8 +51,8 @@ const registerUser = asyncHandler(async (req, res) => {
   if (user) {
 
     generateToken(res, user._id);
-
-
+    
+    
     res.status(201).json({
       _id: user._id,
       name: user.name,
@@ -64,10 +64,83 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Invalid user data");
   }
+  
+  
+  
+});
 
 
 
-  });
+const createUser = asyncHandler(async (req, res) => {
+  const { name, email, password } = req.body;
+
+  const userExist = await User.findOne({ email });
+
+  if (userExist) {
+    res.status(400);
+    throw new Error("User already exists");
+  }
+
+  const user = await User.create({
+    name,
+    email,
+    password,
+
+});
+  if (user) {
+
+    // generateToken(res, user._id);
+    
+    
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid user data");
+  }
+  
+  
+  
+});
+
+
+// @desc create user profile
+// @route POST /api/users/profile
+// @access Private
+
+// const createUser = asyncHandler(async (req, res) => {
+//   const { name, email, password } = req.body;
+
+//   try {
+//     // Create a new user with the provided name, email, and password
+//     const user = await User.create({
+//       name,
+//       email,
+//       password,
+//     });
+
+//     // Respond with the created user's data and a status of 201 (Created)
+//     res.status(201).json({
+//       _id: user._id,
+//       name: user.name,
+//       email: user.email,
+//       isAdmin: user.isAdmin,
+//     });
+//   } catch (error) {
+//     // If user creation fails, handle the error and send an error response
+//     res.status(400).json({
+//       message: "Invalid user data",
+//     });
+//   }
+// });
+
+
+
 // @desc    Get user profile
 // @route   GET /api/users/profile
 // @access  Private
@@ -114,6 +187,10 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
   
 });
+
+
+
+
 
 // @desc    Update user profile
 // @route   PUT /api/users/profile
@@ -206,47 +283,42 @@ const getUserById = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 
 const updateUser = asyncHandler(async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
 
-    if (user) {
-      const { name, email, isAdmin } = req.body;
+  // update user
+  const user = await User.findById(req.params.id);
 
-      console.log('Received request body:', req.body); // Log the received request body
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.isAdmin = Boolean(req.body.isAdmin);
 
-      user.name = name || user.name;
-      user.email = email || user.email;
 
-      console.log('User before update:', user); // Log the user object before the update
+    // if (req.body.isAdmin) {
+    //   user.isAdmin = req.body.isAdmin;
+    // } else {
+    //   user.isAdmin = false;
+    // }
 
-      // Check if isAdmin value is being updated correctly
-      console.log('Received isAdmin:', isAdmin); // Log the received isAdmin value
-      user.isAdmin = isAdmin || user.isAdmin;
+    const updatedUser = await user.save();
 
-      console.log('User after update:', user); // Log the user object after the update
-
-      const updatedUser = await user.save();
-
-      console.log('Updated user:', updatedUser); // Log the updated user object
-
-      res.status(200).json({
-        _id: updatedUser._id,
-        name: updatedUser.name,
-        email: updatedUser.email,
-        isAdmin: updatedUser.isAdmin,
-      });
-    } else {
-      res.status(404).json({ message: 'User not found' });
-    }
-  } catch (error) {
-    console.error('Error:', error); // Log any errors that occur
-    res.status(500).json({ message: 'Server error' });
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
   }
 });
 
 
+
+
 export {
   authUser,
+  createUser,
   registerUser,
   getUserProfile,
   updateUserProfile,

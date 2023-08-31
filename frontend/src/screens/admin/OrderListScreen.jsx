@@ -1,9 +1,9 @@
 import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button } from "react-bootstrap";
-import { useGetOrdersQuery } from "../slices/ordersApiSlice";
+import { useGetOrdersQuery } from "../../slices/ordersApiSlice";
 import { toast } from "react-toastify";
-import Loader from "../components/Loader";
-import Message from "../components/Message";
+import Loader from "../../components/Loader";
+import Message from "../../components/Message";
 import { FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 

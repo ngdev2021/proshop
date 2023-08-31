@@ -1,16 +1,21 @@
 import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button } from "react-bootstrap";
-import { useGetUsersQuery, useDeleteUserMutation } from "../slices/usersApiSlice";
+import { useGetUsersQuery, useDeleteUserMutation } from "../../slices/usersApiSlice";
 import { toast } from "react-toastify";
-import Loader from "../components/Loader";
-import Message from "../components/Message";
-import { FaTimes, FaPen, FaTrash, FaEdit, FaCheck  } from "react-icons/fa";
+import Loader from "../../components/Loader";
+import Message from "../../components/Message";
+import { FaTimes, FaPen, FaTrash, FaEdit, FaCheck, FaPlus  } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useCreateUsersMutation, useUpdateUserMutation } from "../../slices/usersApiSlice";
 
 const UserListScreen = () => {
    const { data: users, isLoading, error } = useGetUsersQuery();
 
     const [deleteUser, { isLoading: loadingDelete }] = useDeleteUserMutation();
+
+    const [createUser, { isLoading: loadingCreate }] = useCreateUsersMutation();
+
+    const [updateUser, { isLoading: loadingUpdate }] = useUpdateUserMutation();
 
     
 
@@ -33,6 +38,29 @@ const UserListScreen = () => {
         }
     };
 
+    const createHandler = async () => {
+            try {
+                await createUser();
+                refetch();
+                toast.success("User created");
+            } catch (err) {
+                toast.error(err?.data?.message || err.message);
+            }
+        
+    };
+
+    // const updateHandler = async (id) => {
+    //     try {
+    //         await updateUser(id);
+    //         refetch();
+    //         toast.success("User updated");
+    //     } catch (err) {
+    //         toast.error(err?.data?.message || err.message);
+    //     }
+    // };
+
+
+
 
 
 
@@ -41,11 +69,19 @@ const UserListScreen = () => {
     return (
         <>
             <h1>Users</h1>
+            <div className="d-flex justify-content-end">
+                <LinkContainer  to={`/admin/createuser`} >
+                    <Button className="my-3" onClick={createHandler}>
+                        <FaPlus /> Create User
+                    </Button>
+                </LinkContainer>
+            </div>
             {loadingDelete && <Loader />}
+            {loadingCreate && <Loader />}
             {isLoading ? (
                 <Loader />
             ) : error ? (
-                <Message variant="danger">{error}</Message>
+                <Message variant="danger">{error.message}</Message>
             ) : (
                 <Table striped bordered hover responsive className="table-sm">
                     <thead>
@@ -79,11 +115,12 @@ const UserListScreen = () => {
                                 </td>
 
                                 <td>
-                                    <LinkContainer to={`/admin/user/${user._id}/edit`}>
+                                    <LinkContainer to={`/admin/user/${user._id}/updateuser`}>
                                         <Button
 
                                             className="btn-sm"
                                             variant="light"
+                                            // onClick={() => updateHandler(user._id)}
                                         >
                                             <FaPen style={{ color: "green" }} />
                                         </Button>
