@@ -47,9 +47,10 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             }),
         }),
         getUsers: builder.query({
-            query: () => ({
+            query: ({pageNumber}) => ({
                 url: `${USERS_URL}`,
                 method: 'GET',
+                params: {pageNumber},
             }),
             providesTags: ['Users'],
             keepUnusedDataFor: 5,
@@ -67,13 +68,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             }),
             keepUnusedDataFor: 5,
         }),
-        updateUser: builder.mutation({
-            query: ({ id, data }) => ({
-                url: `${USERS_URL}/${id}`,
-                method: 'PUT',
-                body: data,
-            }),
-        }),getUserDetails: builder.query({
+        // updateUser: builder.mutation({
+        //     query: ({ id, data }) => ({
+        //         url: `${USERS_URL}/${id}`,
+        //         method: 'PUT',
+        //         body: data,
+        //     }),
+        // }),
+        getUserDetails: builder.query({
             query: (id) => ({
                 url: `${USERS_URL}/${id}`,
                 method: 'GET',

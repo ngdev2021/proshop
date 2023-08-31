@@ -14,7 +14,6 @@ const authUser = asyncHandler(async (req, res) => {
 
   if (user && (await user.matchPassword(password))) {
     generateToken(res, user._id);
-    
 
     res.json({
       _id: user._id,
@@ -46,30 +45,21 @@ const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
-
-});
+  });
   if (user) {
-
     generateToken(res, user._id);
-    
-    
+
     res.status(201).json({
       _id: user._id,
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      
     });
   } else {
     res.status(400);
     throw new Error("Invalid user data");
   }
-  
-  
-  
 });
-
-
 
 const createUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -85,29 +75,21 @@ const createUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
-
-});
+  });
   if (user) {
-
     // generateToken(res, user._id);
-    
-    
+
     res.status(201).json({
       _id: user._id,
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      
     });
   } else {
     res.status(400);
     throw new Error("Invalid user data");
   }
-  
-  
-  
 });
-
 
 // @desc create user profile
 // @route POST /api/users/profile
@@ -139,8 +121,6 @@ const createUser = asyncHandler(async (req, res) => {
 //   }
 // });
 
-
-
 // @desc    Get user profile
 // @route   GET /api/users/profile
 // @access  Private
@@ -156,8 +136,6 @@ const logoutUser = asyncHandler(async (req, res) => {
   });
   res.status(200).json({
     message: "Logout successful",
-    
-
   });
 });
 
@@ -169,28 +147,17 @@ const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
-
     res.json({
       _id: user._id,
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      
     });
   } else {
     res.status(404);
     throw new Error("User not found");
-
-
   }
-
-
-  
 });
-
-
-
-
 
 // @desc    Update user profile
 // @route   PUT /api/users/profile
@@ -200,29 +167,27 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
-      
-      user.name = req.body.name || user.name;
-      user.email = req.body.email || user.email;
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
 
-      if (req.body.password) {
-        user.password = req.body.password;
-      }
-  
-      const updatedUser = await user.save();
-  
-      // generateToken(res, user._id);
-  
-      res.status(200).json({
-        _id: updatedUser._id,
-        name: updatedUser.name,
-        email: updatedUser.email,
-        isAdmin: updatedUser.isAdmin,
-  
-      });
-    } else {
-      res.status(404);
-      throw new Error("User not found");
+    if (req.body.password) {
+      user.password = req.body.password;
     }
+
+    const updatedUser = await user.save();
+
+    // generateToken(res, user._id);
+
+    res.status(200).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
 });
 
 // @desc    Get all users
@@ -230,12 +195,14 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 
 const getUsers = asyncHandler(async (req, res) => {
+  const pageSize = 5;
+  const page = Number(req.query.pageNumber) || 1;
+  const count = await User.countDocuments();
   // get all users
-  const users = await User.find({});
-  res.json(users);
-
-  
-  
+  const users = await User.find({})
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+  res.json({ users, page, pages: Math.ceil(count / pageSize) });
 });
 
 // @desc    Delete user
@@ -257,7 +224,6 @@ const deleteUser = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("User not found");
   }
- 
 });
 
 // @desc    Get user by ID
@@ -270,12 +236,10 @@ const getUserById = asyncHandler(async (req, res) => {
 
   if (user) {
     res.json(user);
-  }
-  else {
+  } else {
     res.status(404);
     throw new Error("User not found");
   }
-
 });
 
 // @desc    Update user
@@ -283,7 +247,6 @@ const getUserById = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 
 const updateUser = asyncHandler(async (req, res) => {
-
   // update user
   const user = await User.findById(req.params.id);
 
@@ -291,7 +254,6 @@ const updateUser = asyncHandler(async (req, res) => {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
     user.isAdmin = Boolean(req.body.isAdmin);
-
 
     // if (req.body.isAdmin) {
     //   user.isAdmin = req.body.isAdmin;
@@ -312,9 +274,6 @@ const updateUser = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 });
-
-
-
 
 export {
   authUser,

@@ -1,42 +1,53 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import store from './store';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./store";
 // import 'bootstrap/dist/css/bootstrap.min.css';
-import './assets/styles/bootstrap.custom.css';
-import './assets/styles/index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import HomeScreen from './screens/HomeScreen';
-import ProductScreen from './screens/ProductScreen';
-import CartScreen from './screens/CartScreen';
-import  CreateUserScreen from './screens/CreateUserScreen';
-import LoginScreen from './screens/LoginScreen';
-import RegisterScreen from './screens/RegisterScreen';
-import ShippingScreen from './screens/ShippingScreen';
-import PrivateRoute from './components/PrivateRoute';
-import PaymentScreen from './screens/PaymentScreen';
-import PlaceOrderScreen from './screens/PlaceOrderScreen';
-import OrderScreen from './screens/OrderScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import UserListScreen from './screens/admin/UserListScreen';
-import ProductListScreen from './screens/admin/ProductListScreen';
-import ProductEditScreen from './screens/admin/ProductEditScreen';
-import OrderListScreen from './screens/admin/OrderListScreen';
-import UserEditScreen from './screens/admin/UserEditScreen';
+import "./assets/styles/bootstrap.custom.css";
+import "./assets/styles/index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import HomeScreen from "./screens/HomeScreen";
+import ProductScreen from "./screens/ProductScreen";
+import CartScreen from "./screens/CartScreen";
+import CreateUserScreen from "./screens/CreateUserScreen";
+import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
+import ShippingScreen from "./screens/ShippingScreen";
+import PrivateRoute from "./components/PrivateRoute";
+import PaymentScreen from "./screens/PaymentScreen";
+import PlaceOrderScreen from "./screens/PlaceOrderScreen";
+import OrderScreen from "./screens/OrderScreen";
+import ProfileScreen from "./screens/ProfileScreen";
+import UserListScreen from "./screens/admin/UserListScreen";
+import ProductListScreen from "./screens/admin/ProductListScreen";
+import ProductEditScreen from "./screens/admin/ProductEditScreen";
+import OrderListScreen from "./screens/admin/OrderListScreen";
+import UserEditScreen from "./screens/admin/UserEditScreen";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
-import AdminRoute from './components/AdminRoute';
-
+import AdminRoute from "./components/AdminRoute";
+import { HelmetProvider } from "react-helmet-async";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index={true} path="/" element={<HomeScreen />} />
+      <Route path="/search/:keyword" element={<HomeScreen />} />
+      <Route
+        path="/search/:keyword/page/:pageNumber"
+        element={<HomeScreen />}
+      />
+      <Route path="/page/:pageNumber" element={<HomeScreen />} />
       <Route path="/product/:id" element={<ProductScreen />} />
       <Route path="/cart/:id?" element={<CartScreen />} />
       <Route path="/login" element={<LoginScreen />} />
-      <Route path="/register" element={<RegisterScreen />} />    
+      <Route path="/register" element={<RegisterScreen />} />
 
       <Route path="" element={<PrivateRoute />}>
         <Route path="/shipping" element={<ShippingScreen />} />
@@ -46,36 +57,41 @@ const router = createBrowserRouter(
         <Route path="/profile" element={<ProfileScreen />} />
       </Route>
 
-        <Route path="" element={<AdminRoute />}>
-          <Route path="/admin/userlist" element={<UserListScreen />} />
-          <Route path="/admin/user/:id/updateuser" element={<UserEditScreen />} />
-          <Route path="/admin/createuser" element={<CreateUserScreen />} />
-          <Route path="/admin/productlist" element={<ProductListScreen />} />
-          <Route path="/admin/product/:id/edit" element={<ProductEditScreen />} />
-          <Route path="/admin/orderlist" element={<OrderListScreen />} />
-
-        
-        </Route>
-</Route>
-
-)
+      <Route path="" element={<AdminRoute />}>
+        <Route path="/admin/userlist" element={<UserListScreen />} />
+        <Route
+          path="/admin/userlist/:pageNumber"
+          element={<UserListScreen />}
+        />
+        <Route path="/admin/user/:id/updateuser" element={<UserEditScreen />} />
+        <Route path="/admin/createuser" element={<CreateUserScreen />} />
+        <Route path="/admin/productlist" element={<ProductListScreen />} />
+        <Route
+          path="/admin/productlist/:pageNumber"
+          element={<ProductListScreen />}
+        />
+        <Route path="/admin/product/:id/edit" element={<ProductEditScreen />} />
+        <Route path="/admin/orderlist" element={<OrderListScreen />} />
+        <Route
+          path="/admin/orderlist/:pageNumber"
+          element={<OrderListScreen />}
+        />
+      </Route>
+    </Route>
+  )
 );
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-
   <React.StrictMode>
-    <Provider store={store}>
-      <PayPalScriptProvider
-        
-      //  deferLoading={true}
-       >
-    <RouterProvider router={router}/>
-      </PayPalScriptProvider>
-    </Provider>
-      
+    <HelmetProvider>
+      <Provider store={store}>
+        <PayPalScriptProvider deferLoading={true}>
+          <RouterProvider router={router} />
+        </PayPalScriptProvider>
+      </Provider>
+    </HelmetProvider>
   </React.StrictMode>
 );
-
 
 reportWebVitals();

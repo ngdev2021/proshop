@@ -42,8 +42,8 @@ const CreateUserScreen = () => {
     } else {
       try {
         const response = await createUser({ name, email, isAdmin, password });
-        console.log(response);
-        if (response.status === 'success') {
+        console.log("response",response);
+        if (response.data) {
           toast.success("User created successfully");
           navigate("/admin/userlist");
         } else {
