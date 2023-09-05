@@ -8,10 +8,12 @@ import {
   Form,
   Button,
   Card,
-} from 'react-bootstrap';
+} from 'react-bootstrap'; 
 import { FaTrash } from 'react-icons/fa';
 import Message from '../components/Message';
 import { addToCart, removeFromCart } from '../slices/cartSlice';
+import  './CartScreen.css';
+
 
 const CartScreen = () => {
   const navigate = useNavigate();
@@ -44,6 +46,14 @@ const CartScreen = () => {
           </Message>
         ) : (
           <ListGroup variant='flush'>
+            <ListGroup.Item>
+              <Row>
+                <Col md={2}>
+                  <Link to='/'>Continue Shopping</Link>
+                </Col>
+              </Row>
+            </ListGroup.Item>
+            
             {cartItems.map((item) => (
               <ListGroup.Item key={item._id}>
                 <Row>
@@ -98,9 +108,22 @@ const CartScreen = () => {
                 .toFixed(2)}
             </ListGroup.Item>
             <ListGroup.Item>
+            </ListGroup.Item>
+          
+
+
+
+            <ListGroup.Item>
+            <Button
+                type='button'
+                className='btn-block checkout-go-back'
+                onClick={() => navigate('/')}
+              >
+                Continue Shopping
+              </Button>
               <Button
                 type='button'
-                className='btn-block'
+                className='btn-block checkout-go-back'
                 disabled={cartItems.length === 0}
                 onClick={checkoutHandler}
               >

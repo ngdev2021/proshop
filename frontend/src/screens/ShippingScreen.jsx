@@ -34,6 +34,9 @@ const submitHandler = (e) => {
     return (
         <FormContainer>
             <CheckoutSteps step1 step2 step3 step4 />
+            <Button onClick={() => navigate('/')} variant='outline-dark' className='my-3'>
+               Continue Shopping
+            </Button>
 
             <h1>Shipping</h1>
             <Form onSubmit={submitHandler}>
